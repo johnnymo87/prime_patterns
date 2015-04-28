@@ -1,24 +1,37 @@
 module Strategies
-  class LessThanTwo < Struct.new(:number)
+  class AbstractStrategy
+
+    attr_reader :number
+
+    def initialize(number)
+      @number = number
+    end
+
+    def prime?
+      !not_prime?
+    end
+  end
+
+  class LessThanTwo < AbstractStrategy
     def not_prime?
       number < 2
     end
   end
 
-  class IsEven < Struct.new(:number)
+  class IsEven < AbstractStrategy
     def not_prime?
       number > 2 && number.even?
     end
   end
 
-  class HasIntegerSquareRoot < Struct.new(:number)
+  class HasIntegerSquareRoot < AbstractStrategy
     def not_prime?
       sqrt = Math.sqrt(number)
       sqrt == sqrt.floor
     end
   end
 
-  class HasDivisor < Struct.new(:number)
+  class HasDivisor < AbstractStrategy
     def not_prime?
       sqrt = Math.sqrt(number).floor
       (3...sqrt).any? do |i|
